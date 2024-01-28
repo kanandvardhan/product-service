@@ -27,6 +27,7 @@ public class OrderService {
 
         order.setOrderLineItemsList(orderLineItems);
 
+        // Call Inventory Service, and place order if product is in stock
         orderRepository.save(order);
     }
 
