@@ -24,39 +24,39 @@ import java.math.BigDecimal;
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
-class SpringMicroserviceProductServiceApplicationTests {
+class ProductServiceApplicationTests {
 
-	@Container
-	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.2");
+    @Container
+    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.2");
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-	@Autowired
-	private ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-	@Autowired
-	private ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
-	@DynamicPropertySource
-	static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry){
-		dynamicPropertyRegistry.add("spring.data.mongodb.uri",mongoDBContainer::getReplicaSetUrl);
-	}
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry dynamicPropertyRegistry) {
+        dynamicPropertyRegistry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+    }
 
-	@Test
-	void shouldCreateProduct() throws Exception {
+    @Test
+    void shouldCreateProduct() throws Exception {
 
-		ProductRequest productRequest = getProductRequest();
-		String produdctRequestString = objectMapper.writeValueAsString(productRequest);
+        ProductRequest productRequest = getProductRequest();
+        String produdctRequestString = objectMapper.writeValueAsString(productRequest);
 
-		mockMvc.perform(MockMvcRequestBuilders.post("/api/product").contentType(MediaType.APPLICATION_JSON).content(produdctRequestString)).andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/product").contentType(MediaType.APPLICATION_JSON).content(produdctRequestString)).andExpect(MockMvcResultMatchers.status().isCreated());
 
-		Assertions.assertEquals(1,productRepository.findAll().size());
-	}
+        Assertions.assertEquals(1, productRepository.findAll().size());
+    }
 
 
-	private ProductRequest getProductRequest(){
-		return ProductRequest.builder().name("iPhone 13 Pro Max").description("iPhone 13").price(BigDecimal.valueOf(1200)).build();
-	}
+    private ProductRequest getProductRequest() {
+        return ProductRequest.builder().name("iPhone 13 Pro Max").description("iPhone 13").price(BigDecimal.valueOf(1200)).build();
+    }
 
 }
