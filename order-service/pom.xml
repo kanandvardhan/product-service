@@ -8,6 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>order-service</artifactId>
+    <name>order-service</name>
     <version>0.0.1-SNAPSHOT</version>
     <description>Demo project for Spring Boot Microservice</description>
     <properties>
